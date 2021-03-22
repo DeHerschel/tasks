@@ -40,6 +40,11 @@ export default class Model {
 		this.save();
 		return {...task}; //expand object
 	}
+	editTask(id, values) {
+		const index = this.findTask(id);
+		Object.assign(this.tasks[index], values);
+		this.save();
+	}
 	removeTask(id) {
 		const index = this.findTask(id);
 		this.tasks.splice(index, 1);

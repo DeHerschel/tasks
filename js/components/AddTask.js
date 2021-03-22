@@ -8,10 +8,8 @@ export default class AddTask {
 	}
 	onclick(callback) {
 		this.addbtn.onclick = () => {
-			if (title.value === '' || description.value === '') {
-				//alert.classList.remove('d-none');
-				//alert.innerText = "Title and description are required";
-				this.alert.show("Title and description are requiredl")
+			if (!title.value) {
+				this.alert.show("Title is required")
 			} else {
                 this.alert.hide();
 				callback(this.title.value, this.description.value);
