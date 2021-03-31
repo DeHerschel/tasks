@@ -1,13 +1,17 @@
 import AddTask from "./components/AddTask.js";
 import Modal from "./components/Modal.js";
+import Filters from "./components/Filters.js";
+
 export default class View {
-	constructor() {
+		constructor() {
 		this.model = null;
         this.table = document.getElementById('table');
         this.addTaskForm = new AddTask();
         this.addTaskForm.onclick((title, description) => this.addTask(title, description));
 		this.modal = new Modal();
 		this.modal.onclick((id, values) => this.editTask(id, values));
+		this.filters = new Filters();
+		this.filters.onclick((filters) => this.filter(filters))
 	}
 	setModel(model) { 
 		this.model = model;
@@ -61,6 +65,25 @@ export default class View {
         compCheckbox.onclick = () => this.toggleCompleted(task.id);
         row.children[2].appendChild(compCheckbox);
     }
+	filter(filters) {
+			const { type, words } = filters;
+			const [, ...rows] = this.table.getElementsByTagName('tr');
+			for (const row of rows) {
+				const [title, description, completed] = row.children;
+				let shouldHide = false;
+				if (words) {
+					shouldHide = !title.innerHTML.includes(words) && !description.innerHTML.includes(words);
+				}
+				const shouldBeCompleted = type === 'completed';
+				const isCompleted = completed.children[0].checked;
+				if (type && type !== 'all') {
+					if (shouldBeCompleted !== isCompleted) {
+						shouldHide = true;
+					}
+				}
+				shouldHide ? row.classList.add('d-none') : row.classList.remove('d-none');
+			}
+	}
 	render() {
 		const tasks = this.model.getTasks();
 		tasks.forEach(task => this.createRow(task));
