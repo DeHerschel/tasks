@@ -1,2 +1,2 @@
 # tasks
-Tasks list made to learn more about JS OOP
+Tasks list app made to learn more about JS OOP
